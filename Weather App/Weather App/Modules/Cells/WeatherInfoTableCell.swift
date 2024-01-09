@@ -113,7 +113,8 @@ final class WeatherInfoTableCell: UITableViewCell {
         // Temperature Label
         temperatureLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            temperatureLabel.topAnchor.constraint(equalTo: countryLabel.bottomAnchor, constant: 5),
+            temperatureLabel.topAnchor.constraint(equalTo: countryLabel.bottomAnchor, constant: -15),
+//            temperatureLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0),
             temperatureLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
         ])
         
