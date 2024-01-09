@@ -15,7 +15,7 @@ enum MainTabBarBuilder {
       
         let tabBar = MainTabBarController()
         let homeVC = HomeBuilder.createModule()
-        let favoriteVC = DetailsBuilder.createModule(nil)
+        let favoriteVC = FavoritesBuilder.createModule()
         let homeNavigationController = UINavigationController(rootViewController: homeVC)
         let favoriteNavigationController = UINavigationController(rootViewController: favoriteVC)
         

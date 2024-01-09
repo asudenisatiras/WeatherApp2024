@@ -15,9 +15,11 @@ protocol HomeViewControllerProtocol: AnyObject {
 }
 
 class HomeViewController: UIViewController, UISearchBarDelegate {
+    
+    
     private let tableView: UITableView = {
         let tableView = UITableView()
-        tableView.tableFooterView = UIView() // To remove extra empty cells
+        tableView.tableFooterView = UIView()
         return tableView
     }()
     
@@ -31,14 +33,21 @@ class HomeViewController: UIViewController, UISearchBarDelegate {
     let resultLabel = UILabel()
     
     var presenter: HomePresenterProtocol?
-    
+    var favorite: FavoritesViewControllerProtocol?
     private var weatherService: WeatherServiceProtocol = WeatherService()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         presenter?.viewDidLoad()
     }
-    
+    override func viewWillAppear(_ animated: Bool) {
+           super.viewWillAppear(animated)
+           NotificationCenter.default.addObserver(self, selector: #selector(didUpdateFavorites), name: .didUpdateFavorites, object: nil)
+       }
+    @objc func didUpdateFavorites() {
+        favorite?.loadFavoriteWeatherData()
+            tableView.reloadData()
+        }
     private func setupTableView() {
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -65,20 +74,14 @@ class HomeViewController: UIViewController, UISearchBarDelegate {
             weatherImageView.bottomAnchor.constraint(equalTo: searchBar.topAnchor)
         ])
     }
-    // MARK: - UISearchBarDelegate
-
+    
     private func updateUIForWeatherCondition(isRainy: Bool) {
-        
-        
         tableView.reloadData()
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        // Check if the search text is empty
         presenter?.searchDidChange(searchText)
     }
-    
-    
     private func setupSearchBar() {
         searchBar.placeholder = "Enter city"
         searchBar.delegate = self
@@ -91,7 +94,7 @@ class HomeViewController: UIViewController, UISearchBarDelegate {
             searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
         
-        // Ekstra label için
+      
         let weatherLabel = UILabel()
         weatherLabel.text = "Weather Conditions"
         weatherLabel.textAlignment = .left

@@ -79,7 +79,7 @@ extension HomePresenter: HomeInteractorOutputProtocol {
    func weatherDataResult(_ data: [WeatherData]) {
       self.weatherData = data
       if UserDefaultsService().isFavorite(weather: weatherData.first) {
-         print("ajdhjsdaj")
+         print("service approved")
       }
       // Reload the table view to reflect the changes
       view.reloadData()
