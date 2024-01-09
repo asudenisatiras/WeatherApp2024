@@ -5,12 +5,13 @@
 //  Created by Asude Nisa Tıraş on 8.01.2024.
 //
 
+
 import Foundation
 import UIKit
 import WeatherAPI
 
 protocol HomeRouterProtocol: AnyObject {
-    func navigateToDetail(_ data: WeatherData)
+    func navigateToDetail(_ data: WeatherData?)
 }
 
 final class HomeRouter {
@@ -18,8 +19,11 @@ final class HomeRouter {
 }
 
 extension HomeRouter: HomeRouterProtocol {
-    func navigateToDetail(_ data: WeatherData) {
-        //let detailVC = DetailBuilder.createModule(data)
-        //viewController.navigationController?.pushViewController(detailVC, animated: true)
+    
+    func navigateToDetail(_ data: WeatherData?) {
+        
+        let detailsViewController = DetailsBuilder.createModule(data)
+        
+        viewController.navigationController?.pushViewController(detailsViewController, animated: true)
     }
 }
