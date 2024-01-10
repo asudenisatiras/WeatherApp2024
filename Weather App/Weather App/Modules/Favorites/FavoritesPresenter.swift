@@ -9,10 +9,12 @@ import Foundation
 import WeatherAPI
 import UIKit
 protocol FavoritesPresenterProtocol : AnyObject {
+    var dataCount: Int { get }
     func didSelectCell(at index : Int)
     func weatherData(at index: Int) -> WeatherData?
-    var dataCount: Int { get }
-    func setWeatherData(_ data: [WeatherData])
+    func viewDidLoad()
+    func viewWillAppear()
+    func didRemoveCell(at index : Int)
 }
 
 final class FavoritesPresenter {
@@ -26,10 +28,34 @@ final class FavoritesPresenter {
         self.router = router
         self.interactor = interactor
     }
+    
+    private func setEmptyView() {
+        if weatherData.isEmpty {
+            view.showEmptyView()
+        } else {
+            view.hideEmptyView()
+        }
+    }
 }
 extension FavoritesPresenter : FavoritesPresenterProtocol {
+    func didRemoveCell(at index: Int) {
+        weatherData = interactor.removeFromFavorites(data: weatherData[index])
+        setEmptyView()
+        view.reloadData()
+    }
+    
+    func viewDidLoad() {
+        view.setupSubviews()
+    }
+    
+    func viewWillAppear() {
+        weatherData = interactor.getFavorites()
+        setEmptyView()
+        view.reloadData()
+    }
+    
     var dataCount: Int {
-       weatherData.count
+        weatherData.count
     }
     func weatherData(at index: Int) -> WeatherAPI.WeatherData? {
         guard index >= 0, index < weatherData.count else {
@@ -37,17 +63,10 @@ extension FavoritesPresenter : FavoritesPresenterProtocol {
         }
         return weatherData[index]
     }
-
-    func setWeatherData(_ data: [WeatherData]) {
-        weatherData = data
-    }
-
+    
     func didSelectCell(at index: Int) {
         let selectedWeatherData = weatherData(at: index)
-        print("Selected Weather Data: \(selectedWeatherData)")
         router.navigateToDetail(selectedWeatherData)
+        
     }
-
-    
-    
 }

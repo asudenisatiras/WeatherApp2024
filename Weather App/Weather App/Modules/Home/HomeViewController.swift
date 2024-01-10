@@ -15,7 +15,6 @@ protocol HomeViewControllerProtocol: AnyObject {
 
 class HomeViewController: UIViewController, UISearchBarDelegate {
     
-    
     private let tableView: UITableView = {
         let tableView = UITableView()
         tableView.tableFooterView = UIView()
@@ -38,18 +37,8 @@ class HomeViewController: UIViewController, UISearchBarDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         presenter?.viewDidLoad()
-       
-        
     }
-    override func viewWillAppear(_ animated: Bool) {
-           super.viewWillAppear(animated)
-           NotificationCenter.default.addObserver(self, selector: #selector(didUpdateFavorites), name: .didUpdateFavorites, object: nil)
-       }
-    @objc func didUpdateFavorites() {
-        favorite?.loadFavoriteWeatherData()
-            tableView.reloadData()
-        }
-
+    
     private func setupTableView() {
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -59,14 +48,14 @@ class HomeViewController: UIViewController, UISearchBarDelegate {
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
-
+        
         tableView.separatorStyle = .singleLine
         tableView.separatorColor = .systemBlue
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(WeatherInfoTableCell.self, forCellReuseIdentifier: "weatherInfoCell")
     }
-
+    
     private func setupWeatherImageView() {
         view.addSubview(weatherImageView)
         weatherImageView.translatesAutoresizingMaskIntoConstraints = false
@@ -98,7 +87,7 @@ class HomeViewController: UIViewController, UISearchBarDelegate {
             searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
         
-      
+        
         let weatherLabel = UILabel()
         weatherLabel.text = "Weather Conditions"
         weatherLabel.textAlignment = .left

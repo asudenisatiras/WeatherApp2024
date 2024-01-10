@@ -3,31 +3,15 @@
 //  Weather App
 //
 //  Created by Asude Nisa Tıraş on 9.01.2024.
-//
 
-//import Foundation
-//
-//import UIKit
-//
-//enum MainTabBarBuilder {
-//    static func createModule() -> MainTabBarController {
-//    
-//      
-//        let tabBar = MainTabBarController()
-//        let homeVC = HomeBuilder.createModule()
-//        let favoriteVC = FavoritesBuilder.createModule()
-//        let homeNavigationController = UINavigationController(rootViewController: homeVC)
-//        let favoriteNavigationController = UINavigationController(rootViewController: favoriteVC)
-//        tabBar.viewControllers = [ homeNavigationController, favoriteNavigationController]
-//        
-//        return tabBar
-//    }
-//}
+
 import UIKit
 
 enum MainTabBarBuilder {
     static func createModule() -> MainTabBarController {
         let tabBar = MainTabBarController()
+        
+        tabBar.tabBar.tintColor = UIColor(red: 175/255.0, green: 210/255.0, blue: 229/255.0, alpha: 1.0)
         
         let homeVC = HomeBuilder.createModule()
         let homeTabBarItem = UITabBarItem(title: "Home", image: UIImage(systemName: "house"), selectedImage: UIImage(systemName: "house.fill"))
@@ -40,7 +24,7 @@ enum MainTabBarBuilder {
         let favoriteNavigationController = UINavigationController(rootViewController: favoriteVC)
         
         tabBar.viewControllers = [homeNavigationController, favoriteNavigationController]
-
+        
         return tabBar
     }
 }

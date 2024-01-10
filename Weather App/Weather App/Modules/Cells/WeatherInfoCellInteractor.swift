@@ -32,7 +32,6 @@ extension WeatherInfoTableCellInteractor: WeatherInfoTableCellInteractorProtocol
     
     func addToFavorite(weather: WeatherData?) {
         service.addToFavorite(weather: weather)
-       
         
     }
     

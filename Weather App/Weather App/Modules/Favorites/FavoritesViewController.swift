@@ -9,26 +9,25 @@ import UIKit
 import WeatherAPI
 
 protocol FavoritesViewControllerProtocol: AnyObject {
-    func loadFavoriteWeatherData()
+    func setupSubviews()
+    func reloadData()
+    func showEmptyView()
+    func hideEmptyView()
 }
 
 class FavoritesViewController: UITableViewController, FavoritesViewControllerProtocol {
-
+    
     var presenter: FavoritesPresenterProtocol?
-    var favoriteWeatherData: [WeatherData] = []
-    let userDefaultsService: UserDefaultsServiceProtocol = UserDefaultsService()
+ 
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupTableView()
-        loadFavoriteWeatherData()
-        self.title = "Favorites"
+        presenter?.viewDidLoad()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        loadFavoriteWeatherData()
-        tableView.reloadData()
+        presenter?.viewWillAppear()
     }
   
     private func setupTableView() {
@@ -36,73 +35,55 @@ class FavoritesViewController: UITableViewController, FavoritesViewControllerPro
         tableView.separatorColor = .systemBlue
         tableView.separatorStyle = .singleLine
     }
-
-    public func loadFavoriteWeatherData() {
-        let favorites = userDefaultsService.getFavorites()
-        presenter?.setWeatherData(favorites)
-        favoriteWeatherData = favorites
+    
+    func setupSubviews() {
+        setupTableView()
+        self.title = "Favorites"
     }
-
-
+    
+    func reloadData() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            tableView.reloadData()
+        }
+    }
+    func showEmptyView() {
+        let noFavoritesLabel = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: tableView.bounds.size.height))
+        noFavoritesLabel.text = "There is no favorites here"
+        noFavoritesLabel.textAlignment = .center
+        noFavoritesLabel.font = .systemFont(ofSize: 22)
+        tableView.backgroundView = noFavoritesLabel
+        tableView.separatorStyle = .none
+    }
+    
+    func hideEmptyView() {
+        tableView.backgroundView = nil
+        tableView.separatorStyle = .singleLine
+    }
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let numberOfFavorites = favoriteWeatherData.count
-
-        if numberOfFavorites == 0 {
-            let noFavoritesLabel = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: tableView.bounds.size.height))
-            noFavoritesLabel.text = "There is no favorites here"
-            noFavoritesLabel.textAlignment = .center
-            noFavoritesLabel.font = .systemFont(ofSize: 22)
-            tableView.backgroundView = noFavoritesLabel
-            tableView.separatorStyle = .none
-        } else {
-            
-            tableView.backgroundView = nil
-            tableView.separatorStyle = .singleLine
-        }
-
-        return numberOfFavorites
+        return presenter?.dataCount ?? .zero
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "FavoriteCell", for: indexPath) as! WeatherInfoTableCell
-        let weatherData = favoriteWeatherData[indexPath.row]
-        cell.configure(
-            cityText: weatherData.city,
-            countryText: weatherData.country,
-            temperatureText: "\(weatherData.temperature)",
-            weatherInfoText: weatherData.weatherDescription,
-            humidityText: weatherData.humidity,
-            windSpeedText: weatherData.windSpeed
-            
-        )
-        cell.setButtonImage(systemName: "star.fill")
+        WeatherInfoTableCellBuilder.createModule(cell: cell, data: presenter?.weatherData(at: indexPath.row))
         return cell
     }
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("didSelectCell called at indexPath: \(indexPath)")
-        if let selectedWeatherData = presenter?.weatherData(at: indexPath.row) {
-            presenter?.didSelectCell(at: indexPath.row)
-        } else {
-            print("Error: Selected Weather Data is nil.")
-        }
-    }
-
+        presenter?.didSelectCell(at: indexPath.row)
         
-
+    }
 
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { [weak self] (_, _, completionHandler) in
             guard let self = self else { return }
-            let deletedWeather = self.favoriteWeatherData.remove(at: indexPath.row)
-            self.userDefaultsService.removeFromFavorite(weather: deletedWeather)
-            self.tableView.reloadData()
-
-            NotificationCenter.default.post(name: .didUpdateFavorites, object: nil)
-
+            presenter?.didRemoveCell(at: indexPath.row)
             completionHandler(true)
         }
 

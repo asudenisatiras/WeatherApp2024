@@ -13,15 +13,12 @@ protocol DetailsInteractorProtocol: AnyObject {
     func getFavorites() -> [WeatherData]
 }
 
-
-
 class DetailsInteractor {
     
     let userDefaultsService : UserDefaultsServiceProtocol
     init(userDefaultsService: UserDefaultsServiceProtocol = UserDefaultsService() ) {
         self.userDefaultsService = userDefaultsService
     }
-    
 }
 
 extension DetailsInteractor:DetailsInteractorProtocol {
@@ -29,6 +26,4 @@ extension DetailsInteractor:DetailsInteractorProtocol {
         
         return userDefaultsService.getFavorites()
     }
-    
-    
 }

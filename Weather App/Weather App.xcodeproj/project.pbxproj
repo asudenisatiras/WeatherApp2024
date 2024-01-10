@@ -28,7 +28,8 @@
 		D315447C2B4D998200847C53 /* FavoritesRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D315447B2B4D998200847C53 /* FavoritesRouter.swift */; };
 		D315447E2B4D998F00847C53 /* FavoritesBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D315447D2B4D998F00847C53 /* FavoritesBuilder.swift */; };
 		D31544802B4DF4FF00847C53 /* NotificationCenterExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D315447F2B4DF4FF00847C53 /* NotificationCenterExtension.swift */; };
-		D31544822B4E1BC300847C53 /* DetailsRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D31544812B4E1BC300847C53 /* DetailsRouter.swift */; };
+		D31544842B4EF4BA00847C53 /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D31544832B4EF4BA00847C53 /* ColorExtension.swift */; };
+		D31544862B4F17A200847C53 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D31544852B4F17A200847C53 /* Date+Extension.swift */; };
 		D3A15FE52B4AFC14006B7D95 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A15FE42B4AFC14006B7D95 /* AppDelegate.swift */; };
 		D3A15FE92B4AFC14006B7D95 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A15FE82B4AFC14006B7D95 /* HomeViewController.swift */; };
 		D3A15FEF2B4AFC14006B7D95 /* Weather_App.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D3A15FED2B4AFC14006B7D95 /* Weather_App.xcdatamodeld */; };
@@ -81,7 +82,8 @@
 		D315447B2B4D998200847C53 /* FavoritesRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesRouter.swift; sourceTree = "<group>"; };
 		D315447D2B4D998F00847C53 /* FavoritesBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesBuilder.swift; sourceTree = "<group>"; };
 		D315447F2B4DF4FF00847C53 /* NotificationCenterExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCenterExtension.swift; sourceTree = "<group>"; };
-		D31544812B4E1BC300847C53 /* DetailsRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailsRouter.swift; sourceTree = "<group>"; };
+		D31544832B4EF4BA00847C53 /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
+		D31544852B4F17A200847C53 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		D3A15FE12B4AFC14006B7D95 /* Weather App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Weather App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3A15FE42B4AFC14006B7D95 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D3A15FE82B4AFC14006B7D95 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
@@ -151,7 +153,6 @@
 			children = (
 				D31544562B4C320400847C53 /* DetailsViewController.swift */,
 				D31544582B4C332B00847C53 /* DetailsPresenter.swift */,
-				D31544812B4E1BC300847C53 /* DetailsRouter.swift */,
 				D315445C2B4C334300847C53 /* DetailsInteractor.swift */,
 				D315445E2B4C334F00847C53 /* DetailsBuilder.swift */,
 			);
@@ -172,6 +173,8 @@
 			children = (
 				D31544692B4D6A0300847C53 /* UserDefaultsService.swift */,
 				D315447F2B4DF4FF00847C53 /* NotificationCenterExtension.swift */,
+				D31544832B4EF4BA00847C53 /* ColorExtension.swift */,
+				D31544852B4F17A200847C53 /* Date+Extension.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -412,13 +415,13 @@
 				D315444D2B4C211400847C53 /* HomeRouter.swift in Sources */,
 				D31544622B4C446400847C53 /* MainTabBar.swift in Sources */,
 				D3A15FE92B4AFC14006B7D95 /* HomeViewController.swift in Sources */,
-				D31544822B4E1BC300847C53 /* DetailsRouter.swift in Sources */,
 				D315445F2B4C334F00847C53 /* DetailsBuilder.swift in Sources */,
 				D31544712B4D6AF300847C53 /* WeatherInfoCellInteractor.swift in Sources */,
 				D3A15FE52B4AFC14006B7D95 /* AppDelegate.swift in Sources */,
 				D31544512B4C212900847C53 /* HomeBuilder.swift in Sources */,
 				D31544732B4D6AFF00847C53 /* WeatherInfoCellBuilder.swift in Sources */,
 				D31544592B4C332B00847C53 /* DetailsPresenter.swift in Sources */,
+				D31544842B4EF4BA00847C53 /* ColorExtension.swift in Sources */,
 				D315447C2B4D998200847C53 /* FavoritesRouter.swift in Sources */,
 				D315444B2B4C210900847C53 /* HomePresenter.swift in Sources */,
 				D315445D2B4C334300847C53 /* DetailsInteractor.swift in Sources */,
@@ -431,6 +434,7 @@
 				D3A160192B4AFDF5006B7D95 /* SceneDelegate.swift in Sources */,
 				D315446F2B4D6ADD00847C53 /* WeatherInfoCellPresenter.swift in Sources */,
 				D31544802B4DF4FF00847C53 /* NotificationCenterExtension.swift in Sources */,
+				D31544862B4F17A200847C53 /* Date+Extension.swift in Sources */,
 				D315444F2B4C211F00847C53 /* HomeInteractor.swift in Sources */,
 				D31544572B4C320400847C53 /* DetailsViewController.swift in Sources */,
 			);

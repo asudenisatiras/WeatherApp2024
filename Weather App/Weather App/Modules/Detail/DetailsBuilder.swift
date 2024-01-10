@@ -12,20 +12,15 @@ enum DetailsBuilder {
     static func createModule(_ data: WeatherData?) -> DetailsViewController {
         
         let view = DetailsViewController()
-        let router = DetailsRouter()
+       
         let interactor = DetailsInteractor()
         
         let presenter = DetailsPresenter(
             view: view,
-            router: router,
             interactor: interactor,
             weatherData: data
         )
-        
-        
         view.presenter = presenter
-        router.viewController = view
-
         return view
     }
 }

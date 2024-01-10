@@ -17,7 +17,6 @@ public struct WeatherData: Codable {
     public let weatherDescription: String?
     public let humidity: Int?
     public let windSpeed: Double?
-   
     public let forecast: [ForecastData]?
     
     private enum CodingKeys: String, CodingKey {
@@ -28,7 +27,7 @@ public struct WeatherData: Codable {
 }
 
 public struct ForecastData: Codable {
-    public let date: String?
+    public let date: Date?
     public let temperature: Double?
     public let weatherDescription: String?
     public let humidity: Int?

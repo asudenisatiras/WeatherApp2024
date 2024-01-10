@@ -59,7 +59,7 @@ extension WeatherInfoTablePresenter: WeatherInfoTablePresenterProtocol {
     }
     
     func favoriteButtonDidTap() {
-         
+        
         if interactor.isFavorite(weather: weatherData) {
             interactor.removeFromFavorite(weather: weatherData)
             view.setButtonImage(systemName: "star")

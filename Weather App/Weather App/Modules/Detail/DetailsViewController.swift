@@ -73,7 +73,7 @@ class DetailsViewController: UIViewController {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.image = UIImage(systemName: "humidity")
-                     
+        
         return imageView
     }()
     
@@ -149,14 +149,14 @@ class DetailsViewController: UIViewController {
     }
     private func setupAlignment() {
         let backgroundView = UIView()
-            backgroundView.translatesAutoresizingMaskIntoConstraints = false
-            backgroundView.backgroundColor = UIColor(red: 175/255.0, green: 210/255.0, blue: 229/255.0, alpha: 1.0)
-            backgroundView.layer.cornerRadius = 12
-
-           
-            view.insertSubview(backgroundView, at: 0)
-
-          
+        backgroundView.translatesAutoresizingMaskIntoConstraints = false
+        backgroundView.backgroundColor = UIColor(red: 175/255.0, green: 210/255.0, blue: 229/255.0, alpha: 1.0)
+        backgroundView.layer.cornerRadius = 12
+        
+        
+        view.insertSubview(backgroundView, at: 0)
+        
+        
         view.addSubview(temperatureLabel)
         view.addSubview(descriptionLabel)
         view.addSubview(humidityLabel)
@@ -233,7 +233,6 @@ extension DetailsViewController: DetailsViewControllerProtocol {
         setupAlignment()
         setupVerticalStackView()
         setupHorizontalScrollStackView()
-        
     }
     
 }

@@ -22,5 +22,4 @@ extension FavoritesRouter: FavoritesRouterProtocol {
            let detailsVC = DetailsBuilder.createModule(data)
            viewController.navigationController?.pushViewController(detailsVC, animated: true)
        }
-    
 }

@@ -12,11 +12,14 @@ protocol UserDefaultsServiceProtocol: AnyObject {
     func addToFavorite(weather: WeatherData?)
     func removeFromFavorite(weather: WeatherData?)
     func getFavorites() -> [WeatherData]
+    func saveData(_ data : [WeatherData])
+    func getAllData() -> [WeatherData]
 }
 
 class UserDefaultsService {
     let userDefaults = UserDefaults.standard
     static let favoriteCityKey = "favorites"
+    static let allCityKey = "allCities"
 }
 
 extension UserDefaultsService : UserDefaultsServiceProtocol {
@@ -66,7 +69,6 @@ extension UserDefaultsService : UserDefaultsServiceProtocol {
     }
     
     func removeFromFavorite(weather: WeatherData?) {
-        //TODO: tek guard lete al!!
         guard let weather else {
             return
         }
@@ -80,8 +82,19 @@ extension UserDefaultsService : UserDefaultsServiceProtocol {
         
         let encodingFavoriteCities = try? JSONEncoder().encode(decodedFavoriteCities)
         userDefaults.set(encodingFavoriteCities, forKey: Self.favoriteCityKey)
-        
-        
     }
     
+    func saveData(_ data : [WeatherData]) {
+        let encodingFavoriteCities = try? JSONEncoder().encode(data)
+        userDefaults.set(encodingFavoriteCities, forKey: Self.allCityKey)
+    }
+    
+    func getAllData() -> [WeatherData] {
+        guard let allCities = userDefaults.data(forKey: Self.allCityKey),
+              let decodedCities = try? JSONDecoder().decode([WeatherData].self, from: allCities)
+        else {
+            return []
+        }
+        return decodedCities
+    }
 }

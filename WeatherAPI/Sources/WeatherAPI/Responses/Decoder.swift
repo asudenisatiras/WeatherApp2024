@@ -7,12 +7,15 @@
 
 import Foundation
 
-public enum Decoders {
-    static let dateDecoder: JSONDecoder = {
+public enum WeatherDecoders {
+   public static let weatherDecoder: JSONDecoder = {
         let decoder = JSONDecoder()
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
         decoder.dateDecodingStrategy = .formatted(dateFormatter)
         return decoder
     }()
+    public static let dateFormatter : DateFormatter =  {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy.MM.dd"
+        return dateFormatter
+    } ()
 }

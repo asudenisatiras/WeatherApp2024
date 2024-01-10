@@ -51,14 +51,14 @@ final class WeatherInfoTableCell: UITableViewCell {
         label.textAlignment = .left
         return label
     }()
-      let humidityLabel: UILabel = {
+    let humidityLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 16)
         label.textColor = .black
         label.textAlignment = .left
         return label
     }()
-      let windSpeedLabel: UILabel = {
+    let windSpeedLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 16)
         label.textColor = .black
@@ -78,7 +78,7 @@ final class WeatherInfoTableCell: UITableViewCell {
     lazy var favoriteButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(systemName: "star"), for: .normal)
-        button.tintColor = .red
+        button.tintColor = UIColor(hex:"f2b076")
         button.addTarget(self, action: #selector(favoriteButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -97,19 +97,14 @@ final class WeatherInfoTableCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupSubviews()
-        configureCellAppearance()
+        
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    private func configureCellAppearance() {
-        
-        //        contentView.backgroundColor = UIColor(red: 175/255.0, green: 210/255.0, blue: 229/255.0, alpha: 1.0)
-        
-    }
-    
+     
     private func setupSubviews() {
         contentView.addSubview(cityLabel)
         contentView.addSubview(temperatureLabel)
@@ -130,9 +125,9 @@ final class WeatherInfoTableCell: UITableViewCell {
         temperatureLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             temperatureLabel.topAnchor.constraint(equalTo: countryLabel.bottomAnchor, constant: 15),
-            temperatureLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor, constant: 50), 
+            temperatureLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor, constant: 50),
         ])
-
+        
         
         countryLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -171,7 +166,7 @@ final class WeatherInfoTableCell: UITableViewCell {
             favoriteButton.heightAnchor.constraint(equalToConstant: 30),
         ])
     }
-
+    
     
     @objc private func favoriteButtonTapped() {
         presenter?.favoriteButtonDidTap()
@@ -184,31 +179,23 @@ extension WeatherInfoTableCell: WeatherInfoTableCellProtocol {
         countryLabel.text = countryText
         weatherInfoLabel.text = weatherInfoText
         if let temperature = temperatureText {
-                temperatureLabel.text = "\(temperature)°C"
-            } else {
-                temperatureLabel.text = nil
-            }
+            temperatureLabel.text = "\(temperature)°C"
+        } else {
+            temperatureLabel.text = nil
+        }
         if let humidity = humidityText {
             humidityLabel.text = "Humidity: \(humidity)%"
         } else {
             humidityLabel.text = nil
         }
-
+        
         if let windSpeed = windSpeedText {
             windSpeedLabel.text = "Wind Speed: \(windSpeed) m/s"
         } else {
             windSpeedLabel.text = nil
         }
     }
-
-    
-//    func configure(cityText: String?, countryText: String?, temperatureText: String?, weatherInfoText: String?) {
-//        cityLabel.text = cityText
-//        countryLabel.text = countryText
-//        temperatureLabel.text = temperatureText
-//        weatherInfoLabel.text = weatherInfoText
-//    }
-    
+ 
     func resetSubviews() {
         cityLabel.text = nil
         temperatureLabel.text = nil
