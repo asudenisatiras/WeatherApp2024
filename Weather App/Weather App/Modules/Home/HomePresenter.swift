@@ -8,7 +8,7 @@
 import Foundation
 import WeatherAPI
 
-
+// Define the protocol for HomePresenter
 protocol HomePresenterProtocol: AnyObject {
    func viewDidLoad()
    func searchDidChange(_ searchText: String?)
@@ -81,12 +81,12 @@ extension HomePresenter: HomeInteractorOutputProtocol {
       if UserDefaultsService().isFavorite(weather: weatherData.first) {
          print("service approved")
       }
-     
+      // Reload the table view to reflect the changes
       view.reloadData()
    }
    
    func weatherDataFetchError(_ errorMessage: String) {
       print("Error fetching weather data: \(errorMessage)")
-      
+      // You can handle the error message if needed
    }
 }

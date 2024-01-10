@@ -13,7 +13,6 @@ protocol FavoritesPresenterProtocol : AnyObject {
     func weatherData(at index: Int) -> WeatherData?
     var dataCount: Int { get }
     func setWeatherData(_ data: [WeatherData])
-    
 }
 
 final class FavoritesPresenter {
@@ -45,7 +44,10 @@ extension FavoritesPresenter : FavoritesPresenterProtocol {
 
     func didSelectCell(at index: Int) {
         let selectedWeatherData = weatherData(at: index)
+        print("Selected Weather Data: \(selectedWeatherData)")
         router.navigateToDetail(selectedWeatherData)
     }
 
+    
+    
 }

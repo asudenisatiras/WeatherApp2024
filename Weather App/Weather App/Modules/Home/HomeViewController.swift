@@ -4,7 +4,6 @@
 //
 //  Created by Asude Nisa Tıraş on 7.01.2024.
 //
-
 import UIKit
 import WeatherAPI
 import Alamofire
@@ -19,7 +18,7 @@ class HomeViewController: UIViewController, UISearchBarDelegate {
     
     private let tableView: UITableView = {
         let tableView = UITableView()
-        tableView.tableFooterView = UIView() 
+        tableView.tableFooterView = UIView()
         return tableView
     }()
     
@@ -39,6 +38,8 @@ class HomeViewController: UIViewController, UISearchBarDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         presenter?.viewDidLoad()
+       
+        
     }
     override func viewWillAppear(_ animated: Bool) {
            super.viewWillAppear(animated)
@@ -74,19 +75,14 @@ class HomeViewController: UIViewController, UISearchBarDelegate {
             weatherImageView.bottomAnchor.constraint(equalTo: searchBar.topAnchor)
         ])
     }
-    // MARK: - UISearchBarDelegate
-
+    
     private func updateUIForWeatherCondition(isRainy: Bool) {
-        
-        
         tableView.reloadData()
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         presenter?.searchDidChange(searchText)
     }
-    
-    
     private func setupSearchBar() {
         searchBar.placeholder = "Enter city"
         searchBar.delegate = self
@@ -99,6 +95,7 @@ class HomeViewController: UIViewController, UISearchBarDelegate {
             searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
         
+      
         let weatherLabel = UILabel()
         weatherLabel.text = "Weather Conditions"
         weatherLabel.textAlignment = .left

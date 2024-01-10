@@ -15,8 +15,8 @@ protocol FavoritesViewControllerProtocol: AnyObject {
 class FavoritesViewController: UITableViewController, FavoritesViewControllerProtocol {
 
     var presenter: FavoritesPresenterProtocol?
-    var favoriteWeatherData: [WeatherData] = [] //presentera alacaksın
-    let userDefaultsService: UserDefaultsServiceProtocol = UserDefaultsService()// interactora alacaksın
+    var favoriteWeatherData: [WeatherData] = []
+    let userDefaultsService: UserDefaultsServiceProtocol = UserDefaultsService()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,6 +49,7 @@ class FavoritesViewController: UITableViewController, FavoritesViewControllerPro
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let numberOfFavorites = favoriteWeatherData.count
 
+        // Eğer favori hava durumu verisi yoksa bir etiket ekleyin
         if numberOfFavorites == 0 {
             let noFavoritesLabel = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: tableView.bounds.size.height))
             noFavoritesLabel.text = "There is no favorites here"
@@ -71,11 +72,8 @@ class FavoritesViewController: UITableViewController, FavoritesViewControllerPro
         cell.configure(
             cityText: weatherData.city,
             countryText: weatherData.country,
-            temperatureText: "\(weatherData.temperature)",
-            weatherInfoText: weatherData.weatherDescription,
-            humidityText: weatherData.humidity,
-            windSpeedText: weatherData.windSpeed
-            
+            temperatureText: "\(weatherData.temperature)°C",
+            weatherInfoText: weatherData.weatherDescription
         )
         cell.setButtonImage(systemName: "star.fill")
         return cell
@@ -89,6 +87,9 @@ class FavoritesViewController: UITableViewController, FavoritesViewControllerPro
         }
     }
 
+        
+
+
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { [weak self] (_, _, completionHandler) in
             guard let self = self else { return }
@@ -100,6 +101,7 @@ class FavoritesViewController: UITableViewController, FavoritesViewControllerPro
 
             completionHandler(true)
         }
+
         return UISwipeActionsConfiguration(actions: [deleteAction])
     }
 }

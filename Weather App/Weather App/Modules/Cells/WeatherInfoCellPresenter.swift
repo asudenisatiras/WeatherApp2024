@@ -5,6 +5,7 @@
 //  Created by Asude Nisa Tıraş on 9.01.2024.
 //
 
+
 import Foundation
 import WeatherAPI
 
@@ -41,11 +42,7 @@ extension WeatherInfoTablePresenter: WeatherInfoTablePresenterProtocol {
             cityText: weatherData?.city,
             countryText: weatherData?.country,
             temperatureText: "\(weatherData?.temperature ?? .zero)",
-            weatherInfoText: weatherData?.weatherDescription,
-            humidityText: weatherData?.humidity,
-            windSpeedText: weatherData?.windSpeed
-            
-            
+            weatherInfoText: weatherData?.weatherDescription
         )
         
         if interactor.isFavorite(weather: weatherData) {
