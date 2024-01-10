@@ -6,12 +6,18 @@
 //
 
 import Foundation
-
+import WeatherAPI
+import UIKit
 protocol FavoritesPresenterProtocol : AnyObject {
+    func didSelectCell(at index : Int)
+    func weatherData(at index: Int) -> WeatherData?
+    var dataCount: Int { get }
+    func setWeatherData(_ data: [WeatherData])
     
 }
 
 final class FavoritesPresenter {
+    var weatherData: [WeatherData] = []
     
     unowned let view: FavoritesViewControllerProtocol
     let router: FavoritesRouterProtocol
@@ -23,5 +29,23 @@ final class FavoritesPresenter {
     }
 }
 extension FavoritesPresenter : FavoritesPresenterProtocol {
-    
+    var dataCount: Int {
+       weatherData.count
+    }
+    func weatherData(at index: Int) -> WeatherAPI.WeatherData? {
+        guard index >= 0, index < weatherData.count else {
+            return nil
+        }
+        return weatherData[index]
+    }
+
+    func setWeatherData(_ data: [WeatherData]) {
+        weatherData = data
+    }
+
+    func didSelectCell(at index: Int) {
+        let selectedWeatherData = weatherData(at: index)
+        router.navigateToDetail(selectedWeatherData)
+    }
+
 }

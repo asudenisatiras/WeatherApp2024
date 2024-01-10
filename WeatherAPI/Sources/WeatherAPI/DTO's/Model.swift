@@ -39,6 +39,23 @@ public struct ForecastData: Codable {
         case weatherDescription = "weather_description"
         case windSpeed = "wind_speed"
     }
+    public init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+
+            let dateString = try container.decode(String.self, forKey: .date)
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd"
+            if let date = dateFormatter.date(from: dateString) {
+                dateFormatter.dateFormat = "dd.MM.yyyy"
+                self.date = dateFormatter.string(from: date)
+            } else {
+                self.date = nil
+            }
+            temperature = try container.decode(Double.self, forKey: .temperature)
+            weatherDescription = try container.decode(String.self, forKey: .weatherDescription)
+            humidity = try container.decode(Int.self, forKey: .humidity)
+            windSpeed = try container.decode(Double.self, forKey: .windSpeed)
+        }
 }
 
 

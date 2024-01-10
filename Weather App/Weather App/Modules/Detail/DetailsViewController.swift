@@ -9,7 +9,14 @@ import UIKit
 import WeatherAPI
 
 protocol DetailsViewControllerProtocol: AnyObject {
-    func setupSubviews(with weatherData: WeatherData?)
+    func setupSubviews()
+    func configure(city: String?,
+                   temperature:Double?,
+                   description: String?,
+                   humidity: Int?,
+                   country: String?,
+                   windSpeed: Double?)
+    func createForecastlabels(strings: [String])
 }
 
 class DetailsViewController: UIViewController {
@@ -69,21 +76,80 @@ class DetailsViewController: UIViewController {
         imageView.image = UIImage(systemName: "wind")
         return imageView
     }()
+    private let verticalStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.spacing = 30
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
     
-    private var forecastStackViews: [UIStackView] = []
+    private let horizontalStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.spacing = 30
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+    
     
     var presenter: DetailsPresenterProtocol?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
-        
-        setupSubviews()
-        
         presenter?.viewDidLoad()
+        
+    }
+    private static func makeLabel (text: String?,textAlignment: NSTextAlignment = .natural ,font: UIFont = .systemFont(ofSize: 17)) -> UILabel {
+        let forecastLabel = UILabel()
+        forecastLabel.text = text
+        forecastLabel.textAlignment = textAlignment
+        forecastLabel.numberOfLines = 0
+        forecastLabel.font = font
+        return forecastLabel
+        
     }
     
-    private func setupSubviews() {
+    private func setupVerticalStackView() {
+        
+        verticalStackView.addArrangedSubview(Self.makeLabel(text: "Forecast For Next Two Days", textAlignment: .center,font: .boldSystemFont(ofSize: 17)))
+        
+        view.addSubview(verticalStackView)
+        NSLayoutConstraint.activate([
+            verticalStackView.topAnchor.constraint(equalTo: windSpeedLabel.bottomAnchor, constant: 40),
+            verticalStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            verticalStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16)
+        ])
+        
+    }
+    
+    
+    private func setupHorizontalScrollStackView(){
+        
+        let scrollView = UIScrollView()
+        scrollView.addSubview(horizontalStackView)
+        NSLayoutConstraint.activate([
+            horizontalStackView.topAnchor.constraint(equalTo: scrollView.frameLayoutGuide.topAnchor),
+            horizontalStackView.bottomAnchor.constraint(equalTo: scrollView.frameLayoutGuide.bottomAnchor),
+            horizontalStackView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor, constant: -8),
+            horizontalStackView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor, constant: 8)
+            
+        ])
+        
+        verticalStackView.addArrangedSubview(scrollView)
+        
+        
+    }
+    private func setupAlignment() {
+        let backgroundView = UIView()
+            backgroundView.translatesAutoresizingMaskIntoConstraints = false
+            backgroundView.backgroundColor = UIColor(red: 175/255.0, green: 210/255.0, blue: 229/255.0, alpha: 1.0)
+            backgroundView.layer.cornerRadius = 12
+
+           
+            view.insertSubview(backgroundView, at: 0)
+
+          
         view.addSubview(temperatureLabel)
         view.addSubview(descriptionLabel)
         view.addSubview(humidityLabel)
@@ -93,7 +159,7 @@ class DetailsViewController: UIViewController {
         view.addSubview(humidityIconImageView)
         view.addSubview(windSpeedIconImageView)
         
-        // Add constraints for labels
+        
         NSLayoutConstraint.activate([
             cityLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 100),
             cityLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 25),
@@ -125,69 +191,42 @@ class DetailsViewController: UIViewController {
             windSpeedLabel.topAnchor.constraint(equalTo: humidityLabel.bottomAnchor, constant: 20),
             windSpeedLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
         ])
-    }
-    
-    private func addForecastStackView() {
-        let forecastStackView = UIStackView()
-        forecastStackView.translatesAutoresizingMaskIntoConstraints = false
-        forecastStackView.axis = .horizontal
-        forecastStackView.spacing = 8
-        view.addSubview(forecastStackView)
-        forecastStackViews.append(forecastStackView)
-        
-        
         NSLayoutConstraint.activate([
-            forecastStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            forecastStackView.topAnchor.constraint(equalTo: windSpeedLabel.bottomAnchor, constant: 80),
-            forecastStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            backgroundView.topAnchor.constraint(equalTo: cityLabel.topAnchor, constant: -10),
+            backgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8),
+            backgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8),
+            backgroundView.bottomAnchor.constraint(equalTo: windSpeedLabel.bottomAnchor, constant: 10),
         ])
     }
 }
 
 extension DetailsViewController: DetailsViewControllerProtocol {
-    func setupSubviews(with weatherData: WeatherData?) {
-        if let weatherData = weatherData {
-            temperatureLabel.text = "\(weatherData.temperature)°C"
-            descriptionLabel.text = "\(weatherData.weatherDescription ?? "")"
-            humidityLabel.text = "\(weatherData.humidity ?? 0)%"
-            cityLabel.text = "\(weatherData.city ?? "")"
-            countryLabel.text = "\(weatherData.country ?? "")"
-            windSpeedLabel.text = "\(weatherData.windSpeed ?? 0.0) m/s"
-            
-            forecastStackViews.forEach { $0.removeFromSuperview() }
-            forecastStackViews.removeAll()
-            
-            if let forecast = weatherData.forecast {
-                addForecastStackView()
-                
-                for data in forecast {
-                    let forecastText = """
-                        Date: \(data.date ?? "")
-                        Temperature: \(data.temperature ?? 0.0)
-                        Type: \(data.weatherDescription ?? "")
-                        Humidity: \(data.humidity ?? 0)%
-                        Wind Speed: \(data.windSpeed ?? 0.0)
-                    """
-                    
-                    let forecastLabel = UILabel()
-                    forecastLabel.text = forecastText
-                    forecastLabel.numberOfLines = 0
-                    forecastStackViews.last?.addArrangedSubview(forecastLabel)
-                }
-                
-            
-                let forecastsLabel = UILabel()
-                forecastsLabel.text = "Forecasts for the Next Two Days"
-                forecastsLabel.font = .systemFont(ofSize: 20, weight: .bold)
-                forecastsLabel.translatesAutoresizingMaskIntoConstraints = false
-                view.addSubview(forecastsLabel)
-                
-               
-                NSLayoutConstraint.activate([
-                    forecastsLabel.centerXAnchor.constraint(equalTo: forecastStackViews.last!.centerXAnchor),
-                    forecastsLabel.bottomAnchor.constraint(equalTo: forecastStackViews.last!.topAnchor, constant: -30),
-                ])
-            }
+    func createForecastlabels(strings: [String]) {
+        
+        for string in strings {
+            let label = Self.makeLabel(text: string)
+            horizontalStackView.addArrangedSubview(label)
         }
+        view.setNeedsLayout()
     }
+    
+    func configure(city: String?, temperature: Double?, description: String?, humidity: Int?, country: String?, windSpeed: Double?) {
+        temperatureLabel.text = "\(temperature ?? .zero)°C"
+        descriptionLabel.text = "\(description ?? "")"
+        humidityLabel.text = "\(humidity ?? 0)%"
+        cityLabel.text = "\(city ?? "")"
+        countryLabel.text = "\(country ?? "")"
+        windSpeedLabel.text = "\(windSpeed ?? 0.0) m/s"
+        
+    }
+    
+    func setupSubviews() {
+        self.title = "Details"
+        view.backgroundColor = .white
+        setupAlignment()
+        setupVerticalStackView()
+        setupHorizontalScrollStackView()
+        
+    }
+    
 }

@@ -66,7 +66,7 @@ extension UserDefaultsService : UserDefaultsServiceProtocol {
     }
     
     func removeFromFavorite(weather: WeatherData?) {
-        //TODO: tek guard lete al!!
+        
         guard let weather else {
             return
         }

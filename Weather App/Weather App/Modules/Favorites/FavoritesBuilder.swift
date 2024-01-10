@@ -25,7 +25,7 @@ enum FavoritesBuilder {
         )
         
         view.presenter = presenter
-        router.viewController = view 
+        router.viewController = view
         return view
         
     }

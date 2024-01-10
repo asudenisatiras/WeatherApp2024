@@ -7,9 +7,10 @@
 
 import Foundation
 import UIKit
+import WeatherAPI
 
 protocol FavoritesRouterProtocol: AnyObject {
-    
+    func navigateToDetail( _ data: WeatherData?)
 }
 
 final class FavoritesRouter {
@@ -17,6 +18,9 @@ final class FavoritesRouter {
 }
 
 extension FavoritesRouter: FavoritesRouterProtocol {
-    
+    func navigateToDetail(_ data: WeatherData?) {
+           let detailsVC = DetailsBuilder.createModule(data)
+           viewController.navigationController?.pushViewController(detailsVC, animated: true)
+       }
     
 }
