@@ -12,7 +12,9 @@ protocol WeatherInfoTableCellProtocol: AnyObject {
         cityText: String?,
         countryText: String?,
         temperatureText: String?,
-        weatherInfoText: String?
+        weatherInfoText: String?,
+        humidityText: Int?,
+        windSpeedText: Double?
     )
     func resetSubviews()
     func setButtonImage(systemName: String)
@@ -43,6 +45,20 @@ final class WeatherInfoTableCell: UITableViewCell {
     }()
     
     let countryLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 16)
+        label.textColor = .black
+        label.textAlignment = .left
+        return label
+    }()
+      let humidityLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 16)
+        label.textColor = .black
+        label.textAlignment = .left
+        return label
+    }()
+      let windSpeedLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 16)
         label.textColor = .black
@@ -99,9 +115,11 @@ final class WeatherInfoTableCell: UITableViewCell {
         contentView.addSubview(temperatureLabel)
         contentView.addSubview(countryLabel)
         contentView.addSubview(weatherInfoLabel)
+        contentView.addSubview(humidityLabel)
+        contentView.addSubview(windSpeedLabel)
+        
         addSubview(favoriteButton)
         
-        // City Label
         cityLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             cityLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
@@ -109,15 +127,13 @@ final class WeatherInfoTableCell: UITableViewCell {
             cityLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
         ])
         
-        // Temperature Label
         temperatureLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            temperatureLabel.topAnchor.constraint(equalTo: countryLabel.bottomAnchor, constant: -15),
-//            temperatureLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0),
-            temperatureLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            temperatureLabel.topAnchor.constraint(equalTo: countryLabel.bottomAnchor, constant: 15),
+            temperatureLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor, constant: 50), 
         ])
+
         
-        // Country Label
         countryLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             countryLabel.topAnchor.constraint(equalTo: cityLabel.bottomAnchor, constant: 0),
@@ -125,16 +141,28 @@ final class WeatherInfoTableCell: UITableViewCell {
             countryLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
         ])
         
-        // Other Info Label
         weatherInfoLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             weatherInfoLabel.topAnchor.constraint(equalTo: countryLabel.bottomAnchor, constant: 20),
             weatherInfoLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
             weatherInfoLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
-            weatherInfoLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10)
         ])
         
-        // Favorite Button
+        humidityLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            humidityLabel.topAnchor.constraint(equalTo: weatherInfoLabel.bottomAnchor, constant: 20),
+            humidityLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            humidityLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+        ])
+        
+        windSpeedLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            windSpeedLabel.topAnchor.constraint(equalTo: humidityLabel.bottomAnchor, constant: 20),
+            windSpeedLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            windSpeedLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            windSpeedLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10)
+        ])
+        
         favoriteButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             favoriteButton.centerYAnchor.constraint(equalTo: cityLabel.centerYAnchor),
@@ -143,6 +171,7 @@ final class WeatherInfoTableCell: UITableViewCell {
             favoriteButton.heightAnchor.constraint(equalToConstant: 30),
         ])
     }
+
     
     @objc private func favoriteButtonTapped() {
         presenter?.favoriteButtonDidTap()
@@ -150,19 +179,43 @@ final class WeatherInfoTableCell: UITableViewCell {
 }
 
 extension WeatherInfoTableCell: WeatherInfoTableCellProtocol {
-    
-    func configure(cityText: String?, countryText: String?, temperatureText: String?, weatherInfoText: String?) {
+    func configure(cityText: String?, countryText: String?, temperatureText: String?, weatherInfoText: String?, humidityText: Int?, windSpeedText: Double?) {
         cityLabel.text = cityText
         countryLabel.text = countryText
-        temperatureLabel.text = temperatureText
         weatherInfoLabel.text = weatherInfoText
+        if let temperature = temperatureText {
+                temperatureLabel.text = "\(temperature)°C"
+            } else {
+                temperatureLabel.text = nil
+            }
+        if let humidity = humidityText {
+            humidityLabel.text = "Humidity: \(humidity)%"
+        } else {
+            humidityLabel.text = nil
+        }
+
+        if let windSpeed = windSpeedText {
+            windSpeedLabel.text = "Wind Speed: \(windSpeed) m/s"
+        } else {
+            windSpeedLabel.text = nil
+        }
     }
+
+    
+//    func configure(cityText: String?, countryText: String?, temperatureText: String?, weatherInfoText: String?) {
+//        cityLabel.text = cityText
+//        countryLabel.text = countryText
+//        temperatureLabel.text = temperatureText
+//        weatherInfoLabel.text = weatherInfoText
+//    }
     
     func resetSubviews() {
         cityLabel.text = nil
         temperatureLabel.text = nil
         countryLabel.text = nil
         weatherInfoLabel.text = nil
+        humidityLabel.text = nil
+        windSpeedLabel.text = nil
         favoriteButton.setImage(nil, for: .normal)
     }
     

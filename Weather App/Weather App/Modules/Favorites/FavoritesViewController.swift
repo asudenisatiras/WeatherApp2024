@@ -33,6 +33,8 @@ class FavoritesViewController: UITableViewController, FavoritesViewControllerPro
   
     private func setupTableView() {
         tableView.register(WeatherInfoTableCell.self, forCellReuseIdentifier: "FavoriteCell")
+        tableView.separatorColor = .systemBlue
+        tableView.separatorStyle = .singleLine
     }
 
     public func loadFavoriteWeatherData() {
@@ -49,7 +51,6 @@ class FavoritesViewController: UITableViewController, FavoritesViewControllerPro
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let numberOfFavorites = favoriteWeatherData.count
 
-        // Eğer favori hava durumu verisi yoksa bir etiket ekleyin
         if numberOfFavorites == 0 {
             let noFavoritesLabel = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: tableView.bounds.size.height))
             noFavoritesLabel.text = "There is no favorites here"
@@ -72,8 +73,11 @@ class FavoritesViewController: UITableViewController, FavoritesViewControllerPro
         cell.configure(
             cityText: weatherData.city,
             countryText: weatherData.country,
-            temperatureText: "\(weatherData.temperature)°C",
-            weatherInfoText: weatherData.weatherDescription
+            temperatureText: "\(weatherData.temperature)",
+            weatherInfoText: weatherData.weatherDescription,
+            humidityText: weatherData.humidity,
+            windSpeedText: weatherData.windSpeed
+            
         )
         cell.setButtonImage(systemName: "star.fill")
         return cell

@@ -16,4 +16,3 @@ public enum Decoders {
         return decoder
     }()
 }
-

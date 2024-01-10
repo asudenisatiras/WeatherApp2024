@@ -49,6 +49,7 @@ class HomeViewController: UIViewController, UISearchBarDelegate {
         favorite?.loadFavoriteWeatherData()
             tableView.reloadData()
         }
+
     private func setupTableView() {
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -58,12 +59,14 @@ class HomeViewController: UIViewController, UISearchBarDelegate {
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
-        
+
+        tableView.separatorStyle = .singleLine
+        tableView.separatorColor = .systemBlue
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(WeatherInfoTableCell.self, forCellReuseIdentifier: "weatherInfoCell")
     }
-    
+
     private func setupWeatherImageView() {
         view.addSubview(weatherImageView)
         weatherImageView.translatesAutoresizingMaskIntoConstraints = false
@@ -99,8 +102,8 @@ class HomeViewController: UIViewController, UISearchBarDelegate {
         let weatherLabel = UILabel()
         weatherLabel.text = "Weather Conditions"
         weatherLabel.textAlignment = .left
-        weatherLabel.font = UIFont.systemFont(ofSize: 28, weight: .semibold)
-        weatherLabel.textColor = .black
+        weatherLabel.font =  UIFont.boldSystemFont(ofSize: 30)
+        weatherLabel.textColor = .white
         view.addSubview(weatherLabel)
         weatherLabel.translatesAutoresizingMaskIntoConstraints = false
         

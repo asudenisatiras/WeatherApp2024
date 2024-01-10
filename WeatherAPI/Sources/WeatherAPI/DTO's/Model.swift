@@ -39,6 +39,7 @@ public struct ForecastData: Codable {
         case weatherDescription = "weather_description"
         case windSpeed = "wind_speed"
     }
+    
 }
 
 

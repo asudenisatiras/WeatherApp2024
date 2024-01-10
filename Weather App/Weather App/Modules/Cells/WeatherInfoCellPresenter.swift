@@ -42,7 +42,9 @@ extension WeatherInfoTablePresenter: WeatherInfoTablePresenterProtocol {
             cityText: weatherData?.city,
             countryText: weatherData?.country,
             temperatureText: "\(weatherData?.temperature ?? .zero)",
-            weatherInfoText: weatherData?.weatherDescription
+            weatherInfoText: weatherData?.weatherDescription,
+            humidityText: weatherData?.humidity,
+            windSpeedText: weatherData?.windSpeed
         )
         
         if interactor.isFavorite(weather: weatherData) {
